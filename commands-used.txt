@@ -1,0 +1,155 @@
+    1  docker ps
+    2  docker build -t trend-app .
+    3  docker run -d -p 3000:80 trend-app
+    4  docker login
+    5  docker tag trend-app amudhanvignesh/trend-app:latest
+    6  docker push amudhanvignesh/trend-app:latest
+    7  sudo dnf install terraform -y
+    8  sudo dnf install -y yum-utils
+    9  sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+   10  sudo dnf install -y terraform
+   11  terraform -version
+   12  mkdir terraform
+   13  cd terraform
+   14  vim main.tf
+   15  aws ssm get-parameters-by-path --path /aws/service/ami-amazon-linux-latest --query 'Parameters[].Name'
+   16  aws configure
+   17  aws ssm get-parameter --name /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64 --query "Parameter.Value" --output text
+   18  vim main.tf
+   19  terraform init
+   20  terraform plan
+   21  terraform apply
+   22  sudo dnf install java-17-amazon-corretto -y
+   23  sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+   24  sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+   25  sudo dnf install jenkins -y
+   26  sudo systemctl start jenkins
+   27  sudo systemctl enable jenkins
+   28  sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+   29  vim jenkinsfile
+   30  vim deployment.yaml
+   31  vim service.yaml
+   32  kubectl apply -f deployment.yaml
+   33  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.0/2024-01-04/bin/linux/amd64/kubectl
+   34  chmod +x kubectl
+   35  sudo mv kubectl /usr/local/bin/
+   36  kubectl version --client
+   37  kubectl get nodes
+   38  aws sts get-caller-identity
+   39  aws configure
+   40  aws eks list-clusters --region ap-south-1
+   41  curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+   42  sudo mv /tmp/eksctl /usr/local/bin
+   43  eksctl version
+   44  eksctl create cluster --name trend-eks-cluster --region ap-south-1 --node-type t3.medium --nodes 2
+   45  kubectl get nodes
+   46  kubectl apply -f deployment.yaml
+   47  kubectl apply -f service.yaml
+   48  sudo usermod -aG docker jenkins
+   49  sudo systemctl restart jenkins
+   50  docker --version
+   51  kubectl version
+   52  vim .gitignore
+   53  vim .dockerignore
+   54  git add .
+   55  git commit -m "project setup"
+   56  git push origin main
+   57  git remote -v
+   58  git remote remove origin
+   59  git remote -v
+   60  git remote add origin https://github.com/vigneshkumar-ops/trend.git
+   61  git add .
+   62  git commit -m "project push"
+   63  git push -u origin main
+   64  git add .
+   65  git commit -m "project push"
+   66  cd ..
+   67  ls
+   68  git add .
+   69  git commit -m "initial project push"
+   70  git push -u origin main
+   71  rm -rf dist/terraform/.terraform
+   72  rm -rf terraform/.terraform
+   73  vim .gitignore
+   74  git rm -r --cached dist/terraform/.terraform
+   75  git rm -r --cached .terraform
+   76  git add .
+   77  git commit -m "removed terraform cache + added gitignore"
+   78  git push origin main
+   79  rm -rf terraform/.terraform
+   80  rm -rf dist/terraform/.terraform
+   81  git rm -r --cached terraform/.terraform
+   82  cd ~
+   83  mkdir trend-clean
+   84  cd trend-clean
+   85  cp -r ~/Trend/dist .
+   86  cp -r ~/Trend/terraform .
+   87  cp ~/Trend/Dockerfile .
+   88  cp ~/Trend/deployment.yaml .
+   89  cp ~/Trend/service.yaml .
+   90  cd ~
+   91  ls
+   92  cd ~/Trend
+   93  ls -R
+   94  cd ~/Trend/dist
+   95  vim .gitignore
+   96  rm -rf .git
+   97  git remote add origin https://github.com/vigneshkumar-ops/trend.git
+   98  git add .
+   99  git commit -m "clean project dist push"
+  100  git branch -M main
+  101  git push -u origin main
+  102  cd ~
+  103  mkdir final-project
+  104  cd final-project
+  105  ~/Trend/dist
+  106  cp ~/Trend/dist/Dockerfile .
+  107  cp ~/Trend/dist/index.html .
+  108  cp ~/Trend/dist/vite.svg .
+  109  cp -r ~/Trend/dist/assets .
+  110  cp -r ~/Trend/dist/terraform .
+  111  rm -rf terraform/.terraform
+  112  rm -f terraform/terraform.tfstate
+  113  rm -f terraform/terraform.tfstate.backup
+  114  du -sh *
+  115  find . -name ".terraform"
+  116  vim .gitignore
+  117  git init
+  118  git remote add origin https://github.com/vigneshkumar-ops/trend.git
+  119  git add .
+  120  git commit -m "final clean project push"
+  121  git branch -M main
+  122  git push -u origin main
+  123  aws eks update-kubeconfig --region ap-south-1 --name trend-cluster
+  124  aws eks list-clusters --region ap-south-1
+  125   aws eks update-kubeconfig --region ap-south-1 --name trend-eks-cluster
+  126  kubectl get nodes
+  127  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  128  helm version
+  129  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  130  helm repo update
+  131  kubectl get pods
+  132  kubectl describe pod trend-deployment-695fd598d5-qrqxq
+  133  docker images
+  134  docker login
+  135  docker tag amudhanvignesh/trend-app:latest amudhanvignesh/trend-app:v1
+  136  docker push amudhanvignesh/trend-app:v1
+  137  kubectl rollout restart deployment trend-deployment
+  138  kubectl get pods -w
+  139  kubectl get deployment
+  140  kubectl get svc
+  141  kubectl get pods -o wide
+  142  kubectl get svc
+  143  kubectl get svc trend-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'; echo
+  144  aws elbv2 describe-load-balancers --region ap-south-1 --query "LoadBalancers[?DNSName=='ac8d38ee8bfef493b8b21e725d95d5ab-1782033464.ap-south-1.elb.amazonaws.com'].LoadBalancerArn" --output text
+  145  helm install monitoring prometheus-community/kube-prometheus-stack
+  146  kubectl get pods | egrep 'grafana|prometheus|alertmanager'
+  147  kubectl port-forward svc/monitoring-grafana 3000:80
+  148  kubectl get pods | egrep 'grafana|prometheus|alertmanager'
+  149  kubectl get secret monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 -d; echo
+  150  kubectl port-forward --address 0.0.0.0 svc/monitoring-grafana 3001:80
+  151  kubectl get pods
+  152  kubectl get nodes
+  153  kubectl get pods
+  154  kubectl get svc
+  155  history > commands-used.txt
