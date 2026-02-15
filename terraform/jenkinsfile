@@ -1,0 +1,25 @@
+pipeline {
+  agent any
+
+  stages {
+
+    stage('Clone') {
+      steps {
+        git 'https://github.com/Vennilavan12/Trend.git'
+      }
+    }
+
+    stage('Build Docker') {
+      steps {
+        sh 'docker build -t amudhanvignesh/trend-app:v1 .'
+      }
+    }
+
+    stage('Push Docker') {
+      steps {
+        sh 'docker push amudhanvignesh/trend-app:v1'
+      }
+    }
+
+  }
+}
